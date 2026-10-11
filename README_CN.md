@@ -1,4 +1,4 @@
-# MUST Final Year Project Proposal LaTeX 模板
+# 澳科大毕设 Proposal LaTeX 模板
 
 [英语版本 / English Version](README.md)
 
