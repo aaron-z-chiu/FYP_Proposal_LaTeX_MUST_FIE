@@ -29,6 +29,7 @@ The template is designed to be compiled with **XeLaTeX**.
 .
 ├── main.tex
 ├── must_proposal.sty
+├── reference.bib
 ├── assets/
 │   └── image1.jpeg
 ├── fonts/
@@ -37,13 +38,12 @@ The template is designed to be compiled with **XeLaTeX**.
 
 - `main.tex`  
   Main document. Edit the project information and proposal content here.
-
 - `must_proposal.sty`  
   Defines the page layout, typography, cover page, table of contents, headings, and other formatting.
-
+- `reference.bib`  
+  Stores the bibliography entries used by the proposal. References can be cited in `main.tex` using `\cite{...}`. The reference list is automatically sorted alphabetically by the surname of the first author.
 - `assets/`  
   Contains image assets required by the template.
-
 - `fonts/`  
   Used for locally supplied fonts when the required fonts are not available in the compilation environment.
 
