@@ -1,5 +1,8 @@
 # MUST Final Year Project Proposal LaTeX Template
 
+# This project still contains bugs, please do not use it for now!!! 
+# 本项目目前仍存在bug，暂勿使用！！！
+
 **[Chinese version / 中文版本](./README_CN.md)**
 
 This repository provides a LaTeX version of the **Final Year Project Proposal** template for the School of Computer Science and Engineering, Faculty of Innovation Engineering, Macau University of Science and Technology (MUST).
