@@ -1,5 +1,7 @@
 # MUST Final Year Project Proposal LaTeX 模板
 
+[英语版本 / English Version](README.md)
+
 本仓库提供一个适用于 **澳门科技大学创新工程学院计算机科学与工程学院 Final Year Project Proposal** 的 LaTeX 模板。
 
 该模板根据官方 Microsoft Word 模板进行重建，目标是在 XeLaTeX 中尽可能忠实地复现原始 Word 模板的版式与格式。
