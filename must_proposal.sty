@@ -1,0 +1,138 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{must_proposal}[2026/10/12 MUST BIT proposal layout]
+\RequirePackage{iftex}
+\ifXeTeX\else\PackageError{must_proposal}{Compile with XeLaTeX}{This template requires XeLaTeX.}\fi
+\RequirePackage{fontspec}
+% Each exact family independently resolves: system font -> project files -> error.
+% Project files require all four real faces. No substitute fonts are configured.
+\newcommand\mustrequirefontfiles[5]{%
+ \def\mustfontlist{#2,#3,#4,#5}%
+ \@for\mustfontfile:=\mustfontlist\do{%
+  \IfFileExists{fonts/\mustfontfile}{}{%
+   \PackageError{must_proposal}{Exact #1 is unavailable as a system font.\MessageBreak
+    Required file fonts/\mustfontfile\space is missing.\MessageBreak
+    Supply fonts/#2, fonts/#3,\MessageBreak
+    fonts/#4 and fonts/#5}{%
+    Install the exact #1 family or supply all four listed files. No substitute fonts are permitted.}%
+   \csname @@end\endcsname}}}
+\IfFontExistsTF{Times New Roman}{%
+ \setmainfont{Times New Roman}[RawFeature={-kern,-liga,-clig}]
+}{%
+ \mustrequirefontfiles{Times New Roman}{times.ttf}{timesbd.ttf}{timesi.ttf}{timesbi.ttf}
+ \setmainfont{times.ttf}[Path=fonts/,BoldFont=timesbd.ttf,ItalicFont=timesi.ttf,BoldItalicFont=timesbi.ttf,RawFeature={-kern,-liga,-clig}]
+}
+\IfFontExistsTF{Calibri}{%
+ \newfontfamily\wordcalibri{Calibri}[RawFeature={-kern,-liga,-clig}]
+}{%
+ \mustrequirefontfiles{Calibri}{calibri.ttf}{calibrib.ttf}{calibrii.ttf}{calibriz.ttf}
+ \newfontfamily\wordcalibri{calibri.ttf}[Path=fonts/,BoldFont=calibrib.ttf,ItalicFont=calibrii.ttf,BoldItalicFont=calibriz.ttf,RawFeature={-kern,-liga,-clig}]
+}
+% Native Word MediaBox; retain DOCX body text width/height (451.35 x 698 bp).
+\RequirePackage[paperwidth=595.44bp,paperheight=841.92bp,left=72bp,right=72.09bp,top=72bp,bottom=71.92bp]{geometry}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\RequirePackage{xcolor}
+\RequirePackage{ragged2e}
+\RequirePackage{etoolbox}
+\RequirePackage[unicode,hidelinks,hypertexnames=false]{hyperref}
+\hypersetup{pdftitle={Final Year Project Proposal}}
+\pagestyle{empty}
+\setlength\parindent{0pt}
+\setlength\parskip{10bp}
+\AtBeginDocument{\fontsize{12bp}{15.96bp}\selectfont\frenchspacing}
+\hyphenpenalty=10000 \exhyphenpenalty=10000
+\clubpenalty=10000 \widowpenalty=10000
+\raggedbottom
+\makeatletter
+\newcommand\projecttitle[1]{\def\must@title{#1}}
+\newcommand\studentname[1]{\def\must@name{#1}}
+\newcommand\studentno[1]{\def\must@number{#1}}
+\newcommand\supervisor[1]{\def\must@supervisor{#1}}
+\newcommand\proposaldate[1]{\def\must@date{#1}}
+\projecttitle{XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX}
+\studentname{XXX , XXX , XXX}
+\studentno{XXXXXX , XXXXXX , XXXXXX}
+\supervisor{XXX XXX XXX}
+\proposaldate{September, 2023}
+% Coordinates in PDF points (bp), from the top-left corner.
+\newcommand\must@covercenter[2]{%
+ \node[anchor=base,inner sep=0pt,outer sep=0pt] at ([xshift=311.958bp,yshift=-#1bp]current page.north west) {#2};}
+\newcommand\must@coverleft[3]{%
+ \node[anchor=base west,inner sep=0pt,outer sep=0pt] at ([xshift=#1bp,yshift=-#2bp]current page.north west) {#3};}
+\newcounter{mustcoverdone}
+\newcommand\makeproposalcover{%
+ \thispagestyle{empty}
+ \begin{tikzpicture}[remember picture,overlay]
+  % Native Word border: 0.48 bp strokes, 0.48 bp gaps; outer edges 30/24 bp.
+  \foreach \offset in {0,.96,1.92}{%
+   \draw[line width=.48bp] ([xshift=30.24bp+\offset bp,yshift=-24.24bp-\offset bp]current page.north west)
+   rectangle ([xshift=-24.24bp-\offset bp,yshift=24.24bp+\offset bp]current page.south east);}
+  \node[anchor=north west,inner sep=0pt,outer sep=0pt] at ([xshift=272.8498bp,yshift=-99.4133bp]current page.north west) {\includegraphics[width=77.95bp,height=77.95bp]{assets/image1.jpeg}};
+  \fontsize{14bp}{18.48bp}\selectfont
+  \must@covercenter{202.8}{\bfseries MACAU UNIVERSITY OF SCIENCE AND TECHNOLOGY}
+  \must@covercenter{316.8}{\bfseries School of Computer Science and Engineering}
+  \must@covercenter{345.36}{\bfseries Faculty of Innovation Engineering}
+  \must@covercenter{430.8}{\bfseries Final Year Project Proposal}
+  % Natural wrapping, with fixed nominal-font spaces to prevent TikZ justification.
+  \node[anchor=north west,inner sep=0pt,outer sep=0pt,text width=396.96bp,align=left] at ([xshift=127.68bp,yshift=-478.194bp]current page.north west) {\fontsize{14bp}{18.48bp}\selectfont\RaggedRight\rightskip=0pt plus1fil\parfillskip=0pt plus1fil\spaceskip=3.5bp\xspaceskip=0pt Title:\hspace{7bp}\must@title};
+  \must@coverleft{127.68}{563.52}{Student Name}
+  \must@coverleft{235.68}{563.52}{: \must@name}
+  \must@coverleft{127.68}{592.08}{Student No.}
+  \must@coverleft{235.68}{592.08}{: \must@number}
+  \must@coverleft{127.68}{648.96}{Supervisor}
+  \must@coverleft{235.68}{648.96}{: \must@supervisor}
+  \must@covercenter{734.64}{\must@date}
+ \end{tikzpicture}%
+ \null\clearpage\setcounter{page}{1}\setcounter{mustcoverdone}{1}%
+}
+% Footer has a 595-twip first-line indent, shifting center by 14.875 bp; Word PDF quantizes the anchor to x=312.55 bp.
+\AddToHook{shipout/foreground}{%
+ \ifnum\value{mustcoverdone}>0
+  \begin{tikzpicture}[remember picture,overlay]
+   \node[anchor=base,inner sep=0pt,outer sep=0pt] at ([xshift=14.83bp,yshift=66bp]current page.south) {\normalfont\fontsize{12bp}{18bp}\selectfont\thepage};
+  \end{tikzpicture}%
+ \fi}
+% Reusable flowing pages. Word suppresses 24 bp before-space after page breaks.
+\newcommand\must@heading[4]{%
+ \clearpage\phantomsection\label{#2}\addcontentsline{toc}{section}{#3}%
+ \begingroup\parskip=0pt\offinterlineskip
+ \vbox to \dimexpr30.97bp+#4bp\relax{%
+  \kern\dimexpr16.8bp+#4bp\relax
+  \setbox2=\hbox to\textwidth{%
+   \fontsize{18bp}{29.25bp}\selectfont\bfseries
+   \ifstrequal{#1}{center}{\hfil}{}#3\hfil}%
+  \ht2=0pt\dp2=0pt\box2\vss}%
+ \endgroup
+ \nobreak\vskip10bp\nointerlineskip
+ \fontsize{12bp}{15.96bp}\selectfont
+ \ifstrequal{#1}{center}{\justifying}{\RaggedRight}%
+ \setlength\parindent{0pt}\setlength\parskip{0pt}%
+ \noindent\rule[-3.9bp]{0pt}{15.25bp}\setlength\parskip{10bp}\ignorespaces}
+\newcommand\proposalheading[3][left]{\must@heading{#1}{#2}{#3}{0}}
+\newcommand\abstractheading{\must@heading{center}{sec:abstract}{Abstract}{13.92}}
+% DOCX right tab: 8494 twips = 424.7 bp. Native Word average row pitch: 25.14 bp (subpixel print rounding remains).
+% Word's TOC-field rendering suppresses Hyperlink's blue/underline appearance.
+% Shift only the leader grid's origin by half a dot cell, as in the Word PDF.
+% The compensating kern preserves the label anchor and right page-number tab.
+\newcommand\musttocrow[2]{%
+ \setbox0=\hbox to424.7bp{\kern-1.49bp\hbox to426.19bp{\kern1.49bp%
+  \wordcalibri\fontsize{11bp}{20.15bp}\selectfont\bfseries
+  \hyperref[#2]{#1}\nobreak\leaders\hbox{.}\hfill\hyperref[#2]{\pageref*{#2}}}}%
+ \ht0=10.54bp\dp0=9.6bp\nointerlineskip\box0\vskip5bp}
+\newcommand\proposaltableofcontents{%
+ \clearpage\begingroup\parskip=0pt\offinterlineskip
+ \vbox to27.96bp{\kern20.64bp\setbox2=\hbox to\textwidth{\hfil
+  \fontsize{22bp}{27.96bp}\selectfont\bfseries Table of Contents\hfil}%
+  \ht2=0pt\dp2=0pt\box2\vss}%
+ \vskip11.18bp
+ \musttocrow{Abstract}{sec:abstract}
+ \musttocrow{Contributions}{sec:contributions}
+ \musttocrow{1. Introduction}{sec:introduction}
+ \musttocrow{2. Objectives}{sec:objectives}
+ \musttocrow{3. Related work}{sec:related-work}
+ \musttocrow{4. Methodology}{sec:methodology}
+ \musttocrow{5. Required hardware and software}{sec:hardware-software}
+ \musttocrow{6. Project planning}{sec:project-planning}
+ \musttocrow{References}{sec:references}
+ \endgroup}
+\makeatother
