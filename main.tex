@@ -7,43 +7,89 @@
 \studentname{XXX , XXX , XXX}
 \studentno{XXXXXX , XXXXXX , XXXXXX}
 \supervisor{XXX XXX XXX}
-\proposaldate{September, 2023}
+\proposaldate{November, 2026}
 
 \begin{document}
 \makeproposalcover
 
+\clearpage
 \abstractheading
 In this part, you should summarize the content of your proposal, select the highlights from each section of the proposal, and include all the important details of the proposal, but use as few words as possible.
 
-\proposalheading[center]{sec:contributions}{Contributions}
+\clearpage
+\contributionsheading
 In this part, you should objectively and accurately record the independent work and academic contribution of each member during the completion of the project{\wordcalibri\fontsize{11bp}{15.25bp}\selectfont\space}proposal.
 
-\proposaltableofcontents
+\tableofcontents
 
-\proposalheading{sec:introduction}{1. Introduction}
+\clearpage
+\section{Introduction}
+\label{sec:introduction}
 In this part, you should present the background information~\cite{date2000database} and the motivation~\cite{chikofsky1990reverse} of the project.
 
-\proposalheading{sec:objectives}{2. Objectives}
+Test of ref: Section~\ref{sec:hardware-software}.
+
+
+
+\subsection{Subsection}
+This is a subsection. Test of Figure~\ref{fig:test1}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{assets/water-fall.jpg}
+    \caption{Example figure 1.}
+    \label{fig:test1}
+\end{figure}
+
+\subsubsection{Sub-sub-section}
+This is a sub-subsection. Test of Table~\ref{tab:test1}.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{lcc}
+        \toprule
+        Item & Value A & Value B \\
+        \midrule
+        A & 1 & 2 \\
+        B & 3 & 4 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Example table 1.}
+    \label{tab:test1}
+\end{table}
+
+
+
+\clearpage
+\section{Objectives}
+\label{sec:objectives}
 In this part, you should present the objectives you expect to achieve in the project.
 
-\proposalheading{sec:related-work}{3. Related work}
+
+
+\clearpage
+\section{Related work}
+\label{sec:related-work}
 In this part, you should present the related work of the project. This part may include existing solutions/algorithms/technologies, etc.. 
 
-\proposalheading{sec:methodology}{4. Methodology}
+\clearpage
+\section{Methodology}
+\label{sec:methodology}
 In this part, you should present the methodology you will employ in the project. This part may include flowcharts, block diagrams, frameworks, algorithms, etc..
 
-\proposalheading{sec:hardware-software}{5. Required hardware and software}
+\clearpage
+\section{Required hardware and software}
+\label{sec:hardware-software}
 In this part, you should list the required hardware and software of the project.
 
-\proposalheading{sec:project-planning}{6. Project planning}
+\clearpage
+\section{Project planning}
+\label{sec:project-planning}
 In this part, you should present the project planning using a GANTT chart.
 
 
-% \proposalheading{sec:references}{References}
 % In this part, you should list the references. This part may include research papers, books, websites, etc.. These references should be cited properly.
-\newpage
-\phantomsection
-\label{sec:references}
+\clearpage
 
 \bibliographystyle{plain}
 \bibliography{reference}

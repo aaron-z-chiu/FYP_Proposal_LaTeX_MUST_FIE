@@ -34,7 +34,22 @@
 \RequirePackage{xcolor}
 \RequirePackage{ragged2e}
 \RequirePackage{etoolbox}
-\RequirePackage[unicode,hidelinks,hypertexnames=false]{hyperref}
+\RequirePackage{caption}
+\RequirePackage{booktabs}
+% Conservative template defaults, not additional official MUST requirements.
+% Font and 1.5 line spacing are local to captions; body/graphics are untouched.
+\DeclareCaptionFont{mustproposal}{\normalfont\fontsize{12bp}{18bp}\selectfont}
+\captionsetup*[figure]{font=mustproposal,labelfont={md,up},textfont={md,up},
+ labelsep=colon,format=plain,justification=RaggedRight,singlelinecheck=true,
+ position=bottom}
+\captionsetup*[table]{font=mustproposal,labelfont={md,up},textfont={md,up},
+ labelsep=colon,format=plain,justification=RaggedRight,singlelinecheck=true,
+ position=auto,skip=6pt}
+% Keep the existing outer 10pt skip for captions below tables.
+\AddToHook{cmd/caption@begin/after}{%
+ \ifdefstring{\@captype}{table}{%
+  \caption@iftop{}{\setlength\belowcaptionskip{10pt}}}{}}
+\RequirePackage[unicode,hidelinks,hypertexnames=false,linktoc=all]{hyperref}
 \hypersetup{pdftitle={Final Year Project Proposal}}
 \pagestyle{empty}
 \setlength\parindent{0pt}
@@ -92,47 +107,106 @@
    \node[anchor=base,inner sep=0pt,outer sep=0pt] at ([xshift=14.83bp,yshift=66bp]current page.south) {\normalfont\fontsize{12bp}{18bp}\selectfont\thepage};
   \end{tikzpicture}%
  \fi}
-% Reusable flowing pages. Word suppresses 24 bp before-space after page breaks.
-\newcommand\must@heading[4]{%
- \clearpage\phantomsection\label{#2}\addcontentsline{toc}{section}{#3}%
+% Standard section counters/references with the calibrated Word heading renderer.
+% Page boundaries belong to main.tex, not to generic section commands.
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{1}
+\let\must@article@section\section
+\newcommand\must@renderheading[3]{%
  \begingroup\parskip=0pt\offinterlineskip
- \vbox to \dimexpr30.97bp+#4bp\relax{%
-  \kern\dimexpr16.8bp+#4bp\relax
+ \vbox to \dimexpr30.97bp+#3bp\relax{%
+  \kern\dimexpr16.8bp+#3bp\relax
   \setbox2=\hbox to\textwidth{%
    \fontsize{18bp}{29.25bp}\selectfont\bfseries
-   \ifstrequal{#1}{center}{\hfil}{}#3\hfil}%
+   \ifstrequal{#1}{center}{\hfil}{}#2\hfil}%
   \ht2=0pt\dp2=0pt\box2\vss}%
  \endgroup
  \nobreak\vskip10bp\nointerlineskip
  \fontsize{12bp}{15.96bp}\selectfont
  \ifstrequal{#1}{center}{\justifying}{\RaggedRight}%
  \setlength\parindent{0pt}\setlength\parskip{0pt}%
- \noindent\rule[-3.9bp]{0pt}{15.25bp}\setlength\parskip{10bp}\ignorespaces}
-\newcommand\proposalheading[3][left]{\must@heading{#1}{#2}{#3}{0}}
-\newcommand\abstractheading{\must@heading{center}{sec:abstract}{Abstract}{13.92}}
-% DOCX right tab: 8494 twips = 424.7 bp. Native Word average row pitch: 25.14 bp (subpixel print rounding remains).
-% Word's TOC-field rendering suppresses Hyperlink's blue/underline appearance.
-% Shift only the leader grid's origin by half a dot cell, as in the Word PDF.
-% The compensating kern preserves the label anchor and right page-number tab.
-\newcommand\musttocrow[2]{%
+ % Delay the first-line strut until body text starts. Labels between the
+ % heading and paragraph then keep normal LaTeX whitespace semantics.
+ \everypar{\everypar{}\setlength\parskip{10bp}\rule[-3.9bp]{0pt}{15.25bp}}%
+ \ignorespaces}
+\renewcommand\section{\par\addvspace{24bp}\secdef\must@section\must@ssection}
+\def\must@section[#1]#2{%
+ \ifnum\c@secnumdepth>\z@
+  \refstepcounter{section}%
+  \def\must@sectiontitle{\thesection. #2}%
+  \addcontentsline{toc}{section}{\protect\numberline{\thesection}#1}%
+ \else
+  \phantomsection\def\must@sectiontitle{#2}%
+  \addcontentsline{toc}{section}{#1}%
+ \fi
+ \NR@gettitle{#2}\sectionmark{#1}%
+ \must@renderheading{left}{\must@sectiontitle}{0}}
+\def\must@ssection#1{%
+ \phantomsection\NR@gettitle{#1}%
+ \must@renderheading{left}{#1}{0}}
+% These two unnumbered pages have distinct centered Word positions.
+\newcommand\abstractheading{%
+ \phantomsection\NR@gettitle{Abstract}%
+ \label{sec:abstract}\addcontentsline{toc}{section}{Abstract}%
+ \must@renderheading{center}{Abstract}{13.92}}
+\newcommand\contributionsheading{%
+ \phantomsection\NR@gettitle{Contributions}%
+ \label{sec:contributions}\addcontentsline{toc}{section}{Contributions}%
+ \must@renderheading{center}{Contributions}{0}}
+% Guideline pp. 2--3: regular TNR 12.96 bp, number/title gaps 7.68--10.8 bp.
+% Retain the 1.3 example's 8.28 bp gap; align headings with the body margin.
+\newif\ifmust@lowerheading
+\newcommand\must@preparelowerheading{%
+ \par\setlength\parskip{0pt}\must@lowerheadingtrue}
+% Keep the first body baseline 20.04 bp below a lower-level heading,
+% independently of the body's 10 bp spacing between later paragraphs.
+\AddToHook{cmd/@afterheading/after}{%
+ \ifmust@lowerheading
+  \must@lowerheadingfalse\setlength\parskip{0pt}%
+  \everypar\expandafter{\the\everypar\setlength\parskip{10bp}}%
+ \fi}
+\renewcommand\subsection{\must@preparelowerheading\@startsection{subsection}{2}{0bp}%
+ {-20.04bp}{4.08bp}{\normalfont\fontsize{12.96bp}{20.04bp}\selectfont\addfontfeatures{RawFeature=+kern}}}
+% No explicit third-level example: a conservative, smaller extension.
+\renewcommand\subsubsection{\must@preparelowerheading\@startsection{subsubsection}{3}{0bp}%
+ {-20.04bp}{4.08bp}{\normalfont\fontsize{12bp}{15.96bp}\selectfont}}
+\let\must@article@seccntformat\@seccntformat
+\renewcommand\@seccntformat[1]{%
+ \ifstrequal{#1}{subsection}{\thesubsection\hskip8.28bp}{%
+  \ifstrequal{#1}{subsubsection}{\thesubsubsection\hskip8.28bp}{%
+   \must@article@seccntformat{#1}}}}
+% Keep article's existing BibTeX heading/list appearance. The local alias
+% prevents the calibrated proposal section renderer from changing References.
+\AtBeginEnvironment{thebibliography}{%
+ \let\section\must@article@section
+ \phantomsection\label{sec:references}%
+ \addcontentsline{toc}{section}{\refname}}
+% DOCX right tab: 8494 twips = 424.7 bp; row pitch 25.14 bp.
+% Standard .toc data supplies titles, numbers, pages and hyperref links.
+% Preserve Word's calibrated leader-grid origin and page-number tab.
+\newcommand\must@tocrow[3]{%
  \setbox0=\hbox to424.7bp{\kern-1.49bp\hbox to426.19bp{\kern1.49bp%
   \wordcalibri\fontsize{11bp}{20.15bp}\selectfont\bfseries
-  \hyperref[#2]{#1}\nobreak\leaders\hbox{.}\hfill\hyperref[#2]{\pageref*{#2}}}}%
+  \kern#1bp\relax#2\nobreak\leaders\hbox{.}\hfill#3}}%
  \ht0=10.54bp\dp0=9.6bp\nointerlineskip\box0\vskip5bp}
-\newcommand\proposaltableofcontents{%
+\renewcommand\l@section[2]{%
+ \ifnum\c@tocdepth>0
+  \begingroup\def\numberline##1{##1. }\must@tocrow{0}{#1}{#2}\endgroup
+ \fi}
+\renewcommand\l@subsection[2]{%
+ \ifnum\c@tocdepth>1
+  \begingroup\def\numberline##1{##1 }\must@tocrow{12}{#1}{#2}\endgroup
+ \fi}
+\renewcommand\l@subsubsection[2]{%
+ \ifnum\c@tocdepth>2
+  \begingroup\def\numberline##1{##1 }\must@tocrow{24}{#1}{#2}\endgroup
+ \fi}
+\renewcommand\tableofcontents{%
  \clearpage\begingroup\parskip=0pt\offinterlineskip
  \vbox to27.96bp{\kern20.64bp\setbox2=\hbox to\textwidth{\hfil
   \fontsize{22bp}{27.96bp}\selectfont\bfseries Table of Contents\hfil}%
   \ht2=0pt\dp2=0pt\box2\vss}%
  \vskip11.18bp
- \musttocrow{Abstract}{sec:abstract}
- \musttocrow{Contributions}{sec:contributions}
- \musttocrow{1. Introduction}{sec:introduction}
- \musttocrow{2. Objectives}{sec:objectives}
- \musttocrow{3. Related work}{sec:related-work}
- \musttocrow{4. Methodology}{sec:methodology}
- \musttocrow{5. Required hardware and software}{sec:hardware-software}
- \musttocrow{6. Project planning}{sec:project-planning}
- \musttocrow{References}{sec:references}
+ \@starttoc{toc}%
  \endgroup}
 \makeatother
