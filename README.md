@@ -31,9 +31,9 @@ The template is designed to be compiled with **XeLaTeX**.
 ├── must_proposal.sty
 ├── reference.bib
 ├── assets/
-│   └── image1.jpeg
-├── fonts/
-└── .gitignore
+│   ├── image1.jpeg
+│   └── water-fall.jpg
+└── fonts/
 ```
 
 - `main.tex`  
