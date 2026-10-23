@@ -30,6 +30,7 @@ The template is designed to be compiled with **XeLaTeX**.
 ├── main.tex
 ├── must_proposal.sty
 ├── reference.bib
+├── mustplain.bst
 ├── assets/
 │   ├── image1.jpeg
 │   └── water-fall.jpg
@@ -40,6 +41,8 @@ The template is designed to be compiled with **XeLaTeX**.
   Main document. Edit the project information and proposal content here.
 - `must_proposal.sty`  
   Defines the page layout, typography, cover page, table of contents, headings, and other formatting.
+- `mustplain.bst`
+  Defines the citation format.
 - `reference.bib`  
   Stores the bibliography entries used by the proposal. References can be cited in `main.tex` using `\cite{...}`. The reference list is automatically sorted alphabetically by the surname of the first author.
 - `assets/`  
@@ -109,7 +112,7 @@ Please avoid modifying `must_proposal.sty` unless you need to intentionally chan
 
 If you encounter any issues when using this template, please contact:
 
-**Aaron**: aaron.z.chiu@gmail.com or zechengq@student.must.edu.mo
+**Aaron**: zechengq@student.must.edu.mo
 
 ## Disclaimer
 
