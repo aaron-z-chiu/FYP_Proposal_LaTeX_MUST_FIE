@@ -23,6 +23,8 @@ The template is designed to be compiled with **XeLaTeX**.
 4. Use `main.tex` as the main document.
 5. Recompile the project.
 
+*Note: As font files need be loaded, the compilation time permitted under the free version of Overleaf may be insufficient; users are advised to purchase a student membership.*
+
 ## Project Structure
 
 ```text
