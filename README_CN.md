@@ -30,16 +30,19 @@
 ├── main.tex
 ├── must_proposal.sty
 ├── reference.bib
+├── mustplain.bst
 ├── assets/
-│   └── image1.jpeg
-├── fonts/
-└── .gitignore
+│   ├── image1.jpeg
+│   └── water-fall.jpg
+└── fonts/
 ```
 
 - `main.tex`  
   主文档。项目基本信息以及 Proposal 正文内容均在此文件中修改。
 - `must_proposal.sty`  
   定义页面尺寸、字体、封面、目录、章节标题、页码及其他格式。
+- `mustplain.bst`
+  定义参考文献格式
 - `reference.bib`  
   用于存放 Proposal 中使用的 BibTeX 参考文献条目。可在 `main.tex` 中通过 `\cite{...}` 进行引用。参考文献列表会自动按照第一作者姓氏的字母顺序排列。
 - `assets/`  
